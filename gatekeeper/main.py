@@ -373,5 +373,3 @@ async def evaluate_policy(request: PolicyEvaluationRequest):
 if __name__ == "__main__":
     port = int(os.getenv("API_PORT", "8080"))
     uvicorn.run(app, host="0.0.0.0", port=port)
-
-

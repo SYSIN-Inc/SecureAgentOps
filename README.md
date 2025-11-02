@@ -1,127 +1,197 @@
-# SecureAgentOps: Zero-Trust DevSecOps Framework for GenAI Agents
+# SecureAgentOps
+## Zero-Trust DevSecOps for GenAI Agents at Scale
 
-A comprehensive DevSecOps pipeline that automatically validates, deploys, and monitors GenAI agents for security, compliance, and performance at scale.
-
-## 🎯 Overview
-
-SecureAgentOps provides a zero-trust security framework specifically designed for autonomous AI agents, ensuring they meet security standards before deployment and continuously monitoring their behavior in production.
-
-## 🏗️ Architecture
+**Architecture Overview:**
 
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Agent Code    │───▶│  Security Gate   │───▶│   Production    │
-│   Repository    │    │   Keeper Agent   │    │   Environment   │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-                              │
-                              ▼
-                    ┌──────────────────┐
-                    │  Monitoring &    │
-                    │  Telemetry       │
-                    └──────────────────┘
+┌─────────────┐     ┌──────────────┐     ┌─────────────────┐     ┌──────────────┐     ┌─────────────┐
+│  Developer  │────▶│   CI/CD      │────▶│ Security Gate   │────▶│  Deployment  │────▶│ Monitoring  │
+│   (GitHub)  │     │  Pipeline    │     │   (Gatekeeper)  │     │  (Kubernetes)│     │ (Prometheus)│
+└─────────────┘     └──────────────┘     └─────────────────┘     └──────────────┘     └─────────────┘
+                            │                       │                       │
+                            │                       ▼                       │
+                            │              ┌─────────────────┐              │
+                            │              │  Trivy Scanner  │              │
+                            │              │  Code Analyzer  │              │
+                            │              │ Policy Engine   │              │
+                            │              └─────────────────┘              │
+                            │                                              │
+                            └──────────────────────────────────────────────┘
+                                           Continuous Security
 ```
 
-## 🔧 Core Components
+#### ��️ Core Components
 
-### 1. Security Gatekeeper Agent
-- Automated security scanning of agent code and prompts
-- Agent identity verification and signed model manifests
-- Policy-based deployment gates
-- Real-time security telemetry
+**1. Security Gatekeeper Service**
+- **Technology:** FastAPI (Python 3.11+)
+- **Features:**
+  - RESTful API for security scanning
+  - Multi-scanner architecture (Code, Dependency, Prompt, Trivy)
+  - Policy evaluation engine
+  - Prometheus metrics integration
+- **Location:** `gatekeeper/`
 
-### 2. Zero-Trust Policy Engine
-- Code security validation
-- Prompt injection detection
-- Model dependency verification
-- Communication pattern analysis
+**2. Security Scanners**
+- **Static Code Analysis:** Detects hardcoded secrets, dangerous functions, injection risks
+- **Dependency Scanner:** Identifies vulnerable packages in requirements.txt
+- **Prompt Security Scanner:** Detects prompt injection patterns and unsafe prompts
+- **Trivy Integration:** Comprehensive vulnerability scanning for:
+  - Container images
+  - Filesystem vulnerabilities
+  - Dependency CVEs
+  - Kubernetes resources
 
-### 3. Monitoring & Observability
-- Grafana dashboards for security metrics
-- Prometheus metrics collection
-- Real-time alerting
-- Compliance reporting
+**3. Zero-Trust Policy Engine**
+- **Policy-as-Code:** YAML-based policy configuration
+- **Automated Decisions:** ALLOW/BLOCK/WARN based on security findings
+- **Configurable Rules:** 8+ default policies, extensible for custom requirements
+- **Integration:** Works seamlessly with CI/CD pipelines
+
+
+**4. Kubernetes Deployment**
+- **Infrastructure:** AWS EKS (Elastic Kubernetes Service)
+- **Container Registry:** AWS ECR (Elastic Container Registry)
+- **Monitoring Stack:**
+  - Prometheus for metrics collection
+  - Grafana for visualization
+  - Custom dashboards for security metrics
+
+**5. CI/CD Pipeline Integration**
+- **GitHub Actions:** Complete workflow with security scanning, SBOM generation, and deployment
+- **GitLab CI:** Multi-stage pipeline with automated security validation
+- **Jenkins:** Declarative pipeline with security gates and deployment automation
+- **Deployment Scripts:** Automated build, test, and deploy scripts
+- **Image Management:** Automated Docker image building and ECR push
+- **Kubernetes Manifests:** Infrastructure-as-code for all components
+
+#### 💻 Technology Stack
+
+| Component | Technology | Purpose |
+|-----------|-----------|---------|
+| **API Framework** | FastAPI | High-performance REST API |
+| **Language** | Python 3.11+ | Core security logic |
+| **Container Platform** | Kubernetes (EKS) | Scalable deployment |
+| **Vulnerability Scanner** | Trivy | CVE and dependency scanning |
+| **Monitoring** | Prometheus + Grafana | Metrics and visualization |
+| **Cloud Provider** | AWS (EKS, ECR) | Production-ready infrastructure |
+| **Infrastructure as Code** | Kubernetes Manifests | Reproducible deployments |
+
+#### 🔧 Working Demo
+
+**Live Demo Available:**
+```bash
+./scripts/demo.sh
+```
+
+The demo demonstrates:
+1. ✅ **Zero-Trust Security Scanning** - Real-time agent code analysis
+2. ✅ **Trivy Vulnerability Detection** - Container and dependency scanning
+3. ✅ **Policy-Based Deployment Gates** - Automated policy evaluation
+4. ✅ **Real-time Monitoring** - Prometheus metrics and Grafana dashboards
+5. ✅ **Agent Security Validation** - End-to-end security checks
+
+---
+
 
 ## 🚀 Quick Start
 
-1. **Clone and Setup**
+### Prerequisites
+
+- AWS Account with EKS cluster
+- `kubectl` configured
+- `docker` installed
+- `eksctl` (for cluster creation)
+- `jq` (for JSON processing)
+
+### Deploy to AWS EKS
+
 ```bash
-git clone <repository>
+# 1. Clone repository
+git clone <repository-url>
 cd SecureAgentOps
-./scripts/setup.sh
+
+# 2. Configure AWS credentials
+export AWS_REGION=us-east-1
+export ECR_ACCOUNT_ID=<your-aws-account-id>
+
+# 3. Deploy to EKS
+./scripts/deploy-to-aws-eks.sh
+
+# 4. Run demo
+./scripts/demo.sh
 ```
 
-2. **Deploy Infrastructure**
+### Local Development
+
 ```bash
-kubectl apply -f k8s/
+# 1. Build gatekeeper image
+cd gatekeeper
+docker build -t secureagentops-gatekeeper:latest .
+
+# 2. Run locally
+docker run -p 8080:8080 secureagentops-gatekeeper:latest
+
+# 3. Test API
+curl http://localhost:8080/health
 ```
 
-3. **Configure Policies**
-```bash
-./scripts/configure-policies.sh
-```
-
-4. **Deploy Sample Agent**
-```bash
-./scripts/deploy-sample-agent.sh
-```
+---
 
 ## 📁 Project Structure
 
 ```
 SecureAgentOps/
-├── agents/                 # Example GenAI agents
-├── gatekeeper/            # Security Gatekeeper Agent
-├── policies/              # Zero-trust policies
-├── monitoring/            # Grafana/Prometheus configs
-├── k8s/                  # Kubernetes manifests
-├── ci-cd/                # GitHub Actions workflows
-├── scripts/              # Setup and deployment scripts
-└── docs/                 # Documentation
+├── gatekeeper/              # Security Gatekeeper service
+│   ├── main.py             # FastAPI application
+│   ├── security_scanner.py # Core scanning logic
+│   ├── policy_engine.py    # Zero-trust policy engine
+│   ├── agent_identity.py   # Agent verification
+│   └── Dockerfile          # Container image
+├── agents/                  # Sample agents
+│   └── customer-support-agent/
+├── k8s/                     # Kubernetes manifests
+│   ├── gatekeeper.yaml     # Gatekeeper deployment
+│   ├── monitoring.yaml     # Prometheus/Grafana
+│   └── agent-deployment.yaml
+├── scripts/                 # Automation scripts
+│   ├── deploy-to-aws-eks.sh
+│   ├── demo.sh             # Live demo script
+│   └── setup.sh
+├── docs/                    # Documentation
+│   ├── TRIVY_INTEGRATION.md
+│   └── README.md
+├── monitoring/              # Monitoring components
+│   └── telemetry_collector.py
+└── README.md               # This file
 ```
 
-## 🔒 Security Features
+---
 
-- **Agent Code Scanning**: Static analysis for vulnerabilities
-- **Prompt Security**: Injection attack detection
-- **Model Verification**: Signed manifests and integrity checks
-- **Network Security**: Communication pattern validation
-- **Compliance**: SOC2, GDPR, and custom policy enforcement
 
-## 📊 Monitoring
+### Zero-Trust Policies
 
-- Real-time security dashboards
-- Agent performance metrics
-- Compliance status tracking
-- Automated alerting for security events
+- **zt-001:** No Critical Security Issues (BLOCK)
+- **zt-002:** Limited High Security Issues (WARN)
+- **zt-003:** Agent Identity Verification (BLOCK)
+- **zt-004:** Dependency Security (BLOCK)
+- **zt-005:** Prompt Injection Protection (BLOCK)
+- **zt-006:** Resource Limits (WARN)
+- **zt-007:** Network Security (WARN)
+- **zt-008:** Data Privacy (BLOCK)
 
-## 🤝 Contributing
+---
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+## 📊 Monitoring & Metrics
 
-## 📄 License
+### Prometheus Metrics
 
-MIT License - see [LICENSE](LICENSE) for details.
+- `secureagentops_security_scans_total{status}`
+- `secureagentops_security_findings_total{severity, category}`
+- `secureagentops_policy_evaluations_total{result}`
 
-## ☁️ AWS (EKS) Deployment
+### Grafana Dashboards
 
-Prerequisites:
-- AWS CLI v2 configured (aws configure)
-- kubectl, eksctl, Docker
-- Optional: yq for inline manifest image updates
-
-1) Create EKS cluster
-```bash
-eksctl create cluster -f aws/eks/cluster.yaml
-```
-
-2) Build, push images to ECR and deploy manifests
-```bash
-export AWS_REGION=us-east-1
-export ECR_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-./scripts/deploy-to-aws-eks.sh
-```
-
-Notes:
-- The script tags images with the current git SHA (or "local") and updates `k8s` manifests in-memory to use `ECR_URI/name:TAG`.
-- Ensure you have permission to create ECR repos and update the EKS kubeconfig.
-- If you use additional components with separate images (e.g., `agent-deployer`), provide a Dockerfile and add it to the script's IMAGES list before deploying.
+- Security scan trends
+- Policy evaluation statistics
+- Vulnerability distribution
+- Agent deployment timeline
