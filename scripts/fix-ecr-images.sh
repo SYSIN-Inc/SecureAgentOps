@@ -56,3 +56,5 @@ echo ""
 echo "Current pod status:"
 kubectl -n secureagentops get pods -l app=customer-support-agent
 kubectl -n secureagentops get pods -l app=security-gatekeeper
+
+

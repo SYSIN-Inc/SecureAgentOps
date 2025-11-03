@@ -140,33 +140,7 @@ curl http://localhost:8080/health
 ## 📁 Project Structure
 
 ```
-SecureAgentOps/
-├── gatekeeper/              # Security Gatekeeper service
-│   ├── main.py             # FastAPI application
-│   ├── security_scanner.py # Core scanning logic
-│   ├── policy_engine.py    # Zero-trust policy engine
-│   ├── agent_identity.py   # Agent verification
-│   └── Dockerfile          # Container image
-├── agents/                  # Sample agents
-│   └── customer-support-agent/
-├── k8s/                     # Kubernetes manifests
-│   ├── gatekeeper.yaml     # Gatekeeper deployment
-│   ├── monitoring.yaml     # Prometheus/Grafana
-│   └── agent-deployment.yaml
-├── scripts/                 # Automation scripts
-│   ├── deploy-to-aws-eks.sh
-│   ├── demo.sh             # Live demo script
-│   └── setup.sh
-├── docs/                    # Documentation
-│   ├── TRIVY_INTEGRATION.md
-│   └── README.md
-├── monitoring/              # Monitoring components
-│   └── telemetry_collector.py
-└── README.md               # This file
-```
-
 ---
-
 
 ### Zero-Trust Policies
 

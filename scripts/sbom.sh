@@ -89,7 +89,7 @@ if $TRIVY_CMD fs --format cyclonedx --output "$SBOM_OUTPUT" --quiet "$AGENT_PATH
   if [[ -n "$OUTPUT_FILE" ]]; then
     echo "$ENHANCED_SBOM" > "$OUTPUT_FILE"
     echo ""
-    echo "📄 SBOM saved to: $OUTPUT_FILE"
+    echo "�� SBOM saved to: $OUTPUT_FILE"
   else
     echo ""
     echo "📄 SBOM (JSON):"
@@ -124,5 +124,3 @@ fi
 
 echo ""
 echo "✅ SBOM generation complete!"
-
-

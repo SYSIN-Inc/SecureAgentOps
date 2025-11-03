@@ -29,17 +29,6 @@ pipeline {
             }
         }
         
-        stage('Generate SBOM') {
-            steps {
-                script {
-                    sh '''
-                        ./scripts/generate-sbom.sh gatekeeper sbom-gatekeeper.json || true
-                        archiveArtifacts artifacts: 'sbom-*.json', allowEmptyArchive: true
-                    '''
-                }
-            }
-        }
-        
         stage('Build Docker Images') {
             steps {
                 script {
