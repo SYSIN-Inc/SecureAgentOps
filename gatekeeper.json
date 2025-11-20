@@ -1,0 +1,51 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:e02815d2-aa1a-48c0-a07d-eebda076e5a8",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2025-11-19T18:42:34+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "manufacturer": {
+            "name": "Aqua Security Software Ltd."
+          },
+          "group": "aquasecurity",
+          "name": "trivy",
+          "version": "0.67.2"
+        }
+      ]
+    },
+    "component": {
+      "bom-ref": "ff9acbdf-18a2-42e5-8705-d7795fa321b8",
+      "type": "application",
+      "name": "gatekeeper",
+      "properties": [
+        {
+          "name": "agent_path",
+          "value": "gatekeeper"
+        },
+        {
+          "name": "generated_by",
+          "value": "SecureAgentOps"
+        },
+        {
+          "name": "generated_locally",
+          "value": "true"
+        }
+      ],
+      "version": "1.0.0"
+    }
+  },
+  "components": [],
+  "dependencies": [
+    {
+      "ref": "ff9acbdf-18a2-42e5-8705-d7795fa321b8",
+      "dependsOn": []
+    }
+  ],
+  "vulnerabilities": []
+}

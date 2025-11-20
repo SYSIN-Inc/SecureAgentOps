@@ -1,0 +1,51 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:c492c5f7-7142-405b-a97a-47b4788a3c9b",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2025-11-19T18:49:00+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "manufacturer": {
+            "name": "Aqua Security Software Ltd."
+          },
+          "group": "aquasecurity",
+          "name": "trivy",
+          "version": "0.67.2"
+        }
+      ]
+    },
+    "component": {
+      "bom-ref": "955ab302-ad2d-441a-b111-47a09351d7e0",
+      "type": "application",
+      "name": "risk-detection-agent",
+      "properties": [
+        {
+          "name": "agent_path",
+          "value": "/home/ec2-user/SecureAgentOps/agents/risk-detection-agent/"
+        },
+        {
+          "name": "generated_by",
+          "value": "SecureAgentOps"
+        },
+        {
+          "name": "generated_locally",
+          "value": "true"
+        }
+      ],
+      "version": "1.0.0"
+    }
+  },
+  "components": [],
+  "dependencies": [
+    {
+      "ref": "955ab302-ad2d-441a-b111-47a09351d7e0",
+      "dependsOn": []
+    }
+  ],
+  "vulnerabilities": []
+}
